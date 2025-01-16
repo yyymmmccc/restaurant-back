@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### IntelliJ IDEA ###
-application.yml
+**/application.yml
