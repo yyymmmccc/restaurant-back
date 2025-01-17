@@ -15,14 +15,12 @@ public class SignUpRequestDto {
     private String password;
     private String passwordCheck;
     private String nickname;
-    private String phoneNumber;
 
-    public User toEntity(){
+    public User toEntity(String encodedPassword){
          return User.builder()
                  .userId(userId)
-                 .password(password)
+                 .password(encodedPassword)
                  .nickname(nickname)
-                 .phoneNumber(phoneNumber)
                  .provider("local")
                  .build();
     }

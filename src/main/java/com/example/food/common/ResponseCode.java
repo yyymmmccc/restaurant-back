@@ -1,0 +1,20 @@
+package com.example.food.common;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@AllArgsConstructor
+@Getter
+public enum ResponseCode {
+
+    REG_PASSWORD_FAIL(HttpStatus.BAD_REQUEST, "REG_PASSWORD_FAIL", "비밀번호와 비밀번호확인이 서로 다릅니다."),
+    LOGIN_FAIL(HttpStatus.BAD_REQUEST, "LOGIN_FAIL", "아이디 또는 비밀번호를 확인해주세요."),
+
+    DUP_USER_ID(HttpStatus.CONFLICT, "DUP_ID", "중복된 아이디입니다."),
+    DUP_NICKNAME(HttpStatus.CONFLICT, "DUP_NICKNAME", "중복된 닉네임입니다.");
+
+    private HttpStatus status;
+    private String code;
+    private String message;
+}
