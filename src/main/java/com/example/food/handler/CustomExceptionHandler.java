@@ -5,9 +5,11 @@ import com.example.food.dto.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 @RestControllerAdvice
 @Slf4j
@@ -31,4 +33,5 @@ public class CustomExceptionHandler {
         ResponseDto responseDto = new ResponseDto("SE", "서버 오류입니다.", null);
         return ResponseEntity.status(e.getStatusCode()).body(responseDto);
     }
+
 }

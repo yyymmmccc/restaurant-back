@@ -1,7 +1,7 @@
 package com.example.food.service.impl;
 
 import com.example.food.dto.response.ResponseDto;
-import com.example.food.dto.response.RestaurantDto;
+import com.example.food.dto.response.search.RestaurantDto;
 import com.example.food.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

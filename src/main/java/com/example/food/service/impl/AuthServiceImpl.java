@@ -8,6 +8,7 @@ import com.example.food.dto.request.auth.NicknameCheckRequestDto;
 import com.example.food.dto.request.auth.SignUpRequestDto;
 import com.example.food.dto.response.ResponseDto;
 import com.example.food.handler.CustomException;
+import com.example.food.provider.JwtProvider;
 import com.example.food.repository.UserRepository;
 import com.example.food.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -33,7 +35,6 @@ public class AuthServiceImpl implements AuthService {
 
         return ResponseDto.success(null);
     }
-
     @Override
     public ResponseEntity dupNickname(NicknameCheckRequestDto dto) {
 
@@ -76,7 +77,9 @@ public class AuthServiceImpl implements AuthService {
         if(!loginPasswordCheck)
             throw new CustomException(ResponseCode.LOGIN_FAIL);
 
-        return ResponseDto.success(null);
+        String accessToken = jwtProvider.createAccessToken(user.getUserId());
+
+        return ResponseDto.success(accessToken);
     }
 
     public boolean checkUserIdDuplicate(String userId) {

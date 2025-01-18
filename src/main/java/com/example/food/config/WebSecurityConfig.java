@@ -1,5 +1,7 @@
 package com.example.food.config;
 
+import com.example.food.filter.JwtFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +14,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+
+    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain config(HttpSecurity httpSecurity) throws Exception {
@@ -36,9 +41,8 @@ public class WebSecurityConfig {
                                 , "/api/search").permitAll()
 
                         .anyRequest().authenticated()
-                );
-
-                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // jwtAuthenticationFilter -> 요청 header에 토큰을 검사
         // UsernamePasswordAuthenticationFilter를 사용하지 않을 것이므로 jwt 필터를 먼저 실행
 
