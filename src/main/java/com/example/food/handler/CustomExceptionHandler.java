@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @RestControllerAdvice
 @Slf4j
 public class CustomExceptionHandler {
-
-    @ExceptionHandler
+    @ExceptionHandler(CustomException.class)
     public ResponseEntity handleCustomException(CustomException e){
 
         ResponseCode responseCode = e.getResponseCode();
@@ -24,6 +24,11 @@ public class CustomExceptionHandler {
         ResponseDto responseDto = new ResponseDto(code, message, null);
 
         return ResponseEntity.status(status).body(responseDto);
+    }
 
+    @ExceptionHandler(WebClientResponseException.class)
+    public ResponseEntity handleWebClientResponseException(WebClientResponseException e) {
+        ResponseDto responseDto = new ResponseDto("SE", "서버 오류입니다.", null);
+        return ResponseEntity.status(e.getStatusCode()).body(responseDto);
     }
 }

@@ -32,7 +32,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/check-id"
                                 , "/api/auth/check-nickname"
                                 , "/api/auth/signup"
-                                , "/api/auth/login").permitAll()
+                                , "/api/auth/login"
+                                , "/api/search").permitAll()
 
                         .anyRequest().authenticated()
                 );
