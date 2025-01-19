@@ -26,5 +26,4 @@ public class SearchController {
       return searchService.searchRestaurant(query, page);
     }
 
-
 }
