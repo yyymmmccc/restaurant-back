@@ -19,7 +19,7 @@ public class Wishlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String wishlistId;
+    private int wishlistId;
 
     @Column(name = "place_name")
     private String placeName;
