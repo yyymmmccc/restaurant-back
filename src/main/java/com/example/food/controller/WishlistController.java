@@ -21,6 +21,8 @@ public class WishlistController {
     public ResponseEntity createWishlist(@AuthenticationPrincipal String userId,
                                          @RequestBody @Valid WishlistRequestDto dto){
 
+        log.info("오류");
+
         return wishlistService.createWishlist(userId, dto);
     }
 

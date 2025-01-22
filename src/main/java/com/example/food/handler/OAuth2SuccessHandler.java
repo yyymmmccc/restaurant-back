@@ -28,6 +28,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String accessToken = jwtProvider.createAccessToken(userId);
 
-        response.sendRedirect("http://localhost:8000/main.html?token=" + accessToken);
+        response.sendRedirect("http://localhost:8000/callback.html?token=" + accessToken);
     }
 }

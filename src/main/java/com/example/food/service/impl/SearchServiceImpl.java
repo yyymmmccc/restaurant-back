@@ -17,14 +17,22 @@ public class SearchServiceImpl implements SearchService {
     private String apiKey;
 
     @Override
-    public ResponseEntity searchRestaurant(String query, int page) {
+    public ResponseEntity searchRestaurant(String query, String categoryGroupCode, int page) {
 
         String url = "https://dapi.kakao.com/v2/local/search/keyword.json";
+        StringBuilder sb = new StringBuilder();
+
+        if(categoryGroupCode.isEmpty()){
+            sb.append("?query=" + query + "&page=" + page);
+        }
+        else{
+            sb.append("?query=" + query + "&category_group_code=" + categoryGroupCode + "&page=" + page);
+        }
 
         WebClient webClient = WebClient.create(url);
         RestaurantDto result = webClient
                         .get()
-                        .uri("?query=" + query + "&category_group_code=FD6&page=" + page)
+                        .uri(sb.toString())
                         .header("Authorization", "KakaoAK " + apiKey)
                         .retrieve()  // 응답처리
                         .bodyToMono(RestaurantDto.class) // 응답 본문을 String으로 받기

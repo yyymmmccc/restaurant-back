@@ -21,9 +21,10 @@ public class SearchController {
 
     @GetMapping("")
     public ResponseEntity searchRestaurant(@RequestParam(defaultValue = "") String query,
+                                           @RequestParam(defaultValue = "") String categoryGroupCode,
                                            @RequestParam(defaultValue = "1") int page){
 
-      return searchService.searchRestaurant(query, page);
+      return searchService.searchRestaurant(query, categoryGroupCode, page);
     }
 
 }

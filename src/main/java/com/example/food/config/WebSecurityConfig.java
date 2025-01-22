@@ -45,7 +45,6 @@ public class WebSecurityConfig {
                         .successHandler(oAuth2SuccessHandler)
                 )
 
-                /*
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/check-id"
                                 , "/api/auth/check-nickname"
@@ -55,8 +54,6 @@ public class WebSecurityConfig {
 
                         .anyRequest().authenticated()
                 )
-
-                 */
 
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         // jwtAuthenticationFilter -> 요청 header에 토큰을 검사
