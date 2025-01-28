@@ -31,6 +31,10 @@ public class Planner {
     @Column(name = "end_date")
     private Date endDate;
 
+    @Column(name = "create_date")
+    @CreationTimestamp
+    private Date createDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

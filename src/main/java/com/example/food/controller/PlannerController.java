@@ -27,9 +27,14 @@ public class PlannerController {
     public ResponseEntity getPlanner(@AuthenticationPrincipal String userId,
                                      @RequestParam(name = "plannerId") int plannerId){
 
-        log.info("플래너아이디12 : " + plannerId);
-
         return plannerService.getPlanner(userId, plannerId);
+    }
+
+    @DeleteMapping("/{plannerId}")
+    public ResponseEntity deletePlanner(@AuthenticationPrincipal String userId,
+                                        @PathVariable int plannerId){
+
+        return plannerService.deletePlanner(userId, plannerId);
     }
 
 

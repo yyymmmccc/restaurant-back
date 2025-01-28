@@ -30,8 +30,8 @@ public class PlannerServiceImpl implements PlannerService {
     @Override
     @Transactional
     public ResponseEntity createPlanner(String userId, PlannerRequestDto dto) {
-        User user = userRepository.findById(userId).orElseThrow(()
-                -> new CustomException(ResponseCode.NOT_FOUND_USER));
+
+        User user = findByUser(userId);
 
         Planner planner = dto.toEntity(user);
         plannerRepository.save(planner);
@@ -41,9 +41,8 @@ public class PlannerServiceImpl implements PlannerService {
 
     @Override
     public ResponseEntity getPlanner(String userId, int plannerId) {
-        log.info("플래너아이디 : " + plannerId);
-        Planner planner = plannerRepository.findById(plannerId).orElseThrow(()
-                -> new CustomException(ResponseCode.NOT_FOUND_PLANNER));
+
+        Planner planner = findByPlanner(plannerId);
 
         Date startDate = planner.getStartDate();
         Date endDate = planner.getEndDate();
@@ -52,5 +51,35 @@ public class PlannerServiceImpl implements PlannerService {
         int calcDate = (int) ((endDate.getTime()-startDate.getTime()) / (24*60*60*1000));
 
         return ResponseDto.success(GetPlannerResponseDto.of(planner, calcDate));
+    }
+
+    @Override
+    public ResponseEntity deletePlanner(String userId, int plannerId) {
+
+        Planner planner = findByPlanner(plannerId);
+        User user = findByUser(userId);
+
+        if(!planner.getUser().equals(user))
+            throw new CustomException(ResponseCode.BAD_REQUEST);
+
+        plannerRepository.delete(planner);
+
+        return ResponseDto.success(null);
+    }
+
+    public User findByUser(String userId){
+
+        User user = userRepository.findById(userId).orElseThrow(()
+                -> new CustomException(ResponseCode.NOT_FOUND_USER));
+
+        return user;
+    }
+
+    public Planner findByPlanner(int plannerId){
+
+        Planner planner = plannerRepository.findById(plannerId).orElseThrow(()
+                -> new CustomException(ResponseCode.NOT_FOUND_PLANNER));
+
+        return planner;
     }
 }

@@ -9,4 +9,6 @@ public interface PlannerService {
     ResponseEntity createPlanner(String userId, PlannerRequestDto dto);
 
     ResponseEntity getPlanner(String userId, int plannerId);
+
+    ResponseEntity deletePlanner(String userId, int plannerId);
 }
