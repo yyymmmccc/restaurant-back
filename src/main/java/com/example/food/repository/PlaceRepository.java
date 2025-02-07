@@ -2,8 +2,12 @@ package com.example.food.repository;
 
 import com.example.food.domain.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlaceRepository extends JpaRepository<Place, Integer> {
+
+public interface PlaceRepository extends JpaRepository<Place, Integer>, PlaceCustomRepository {
+
+
 }

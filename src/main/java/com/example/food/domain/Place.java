@@ -1,9 +1,6 @@
 package com.example.food.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,11 +15,15 @@ import lombok.NoArgsConstructor;
 public class Place {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "place_id")
     private int placeId;
 
     @Column(name = "category_code")
-    private String categoryCode;
+    private int categoryCode;
+
+    @Column(name = "area_code")
+    private int areaCode;
 
     @Column(name = "place_name")
     private String placeName;
@@ -34,4 +35,6 @@ public class Place {
 
     private double x;
     private double y;
+
+    private String image;
 }

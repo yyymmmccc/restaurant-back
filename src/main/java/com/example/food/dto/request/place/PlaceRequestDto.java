@@ -16,7 +16,7 @@ public class PlaceRequestDto {
 
     private int placeId;
     private int dayNumber;
-    private String categoryCode;
+    private int categoryCode;
     private String placeName;
     private String phone;
     private String addressName;

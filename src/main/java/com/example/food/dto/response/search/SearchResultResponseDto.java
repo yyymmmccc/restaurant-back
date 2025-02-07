@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class RestaurantDto {
+public class SearchResultResponseDto {
 
-    private Object[] documents;
+    private long totalPages;
+    private long totalElements;
+    private List<SearchResponseDto> items;
 }
