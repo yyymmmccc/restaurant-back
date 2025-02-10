@@ -33,8 +33,6 @@ public class JwtProvider {
 
     public String extractAccessToken(HttpServletRequest request) {
 
-        log.info("accessToken extract");
-
         // 요청 헤더에 Authorization: Bearer EIij2i3jojo 이런식으로 토큰있는 걸 추출
         String authorization = request.getHeader("Authorization");
 

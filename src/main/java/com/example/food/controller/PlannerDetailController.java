@@ -3,6 +3,7 @@ package com.example.food.controller;
 import com.example.food.dto.request.plannerdetail.PlannerDetailRequestDto;
 import com.example.food.service.PlannerDetailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/planner-detail")
 @RequiredArgsConstructor
+@Slf4j
 public class PlannerDetailController {
 
     private final PlannerDetailService plannerDetailService;
@@ -22,10 +24,9 @@ public class PlannerDetailController {
 
     @GetMapping("")
     public ResponseEntity getPlannerDetail(@AuthenticationPrincipal String userId,
-                                           @RequestParam(name = "plannerId") int plannerId,
-                                           @RequestParam(name = "dayNumber") int dayNumber){
+                                           @RequestParam(name = "plannerId") int plannerId){
 
-        return plannerDetailService.getPlannerDetail(userId, plannerId, dayNumber);
+        return plannerDetailService.getPlannerDetail(userId, plannerId);
     }
 
     @DeleteMapping("")

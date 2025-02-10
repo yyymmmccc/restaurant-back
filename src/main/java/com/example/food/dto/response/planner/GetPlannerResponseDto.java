@@ -16,7 +16,6 @@ public class GetPlannerResponseDto {
     private String plannerTitle;
     private int calcDate;
 
-
     public static GetPlannerResponseDto of(Planner planner, int calcDate){
         return GetPlannerResponseDto.builder()
                 .plannerId(planner.getPlannerId())

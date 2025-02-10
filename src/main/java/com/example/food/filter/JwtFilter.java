@@ -33,16 +33,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String accessToken = jwtProvider.extractAccessToken(request);
         if(accessToken == null) {
+            log.info("accessToken Null");
             filterChain.doFilter(request, response);
             return;
         }
 
         Claims claims = jwtProvider.validateAccessToken(accessToken);
         if(claims == null){
+            log.info("claims Null");
             filterChain.doFilter(request, response);
             return;
         }
-        log.info("jwtFilter 확인");
         String userId = claims.get("userId", String.class);
 
         List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));

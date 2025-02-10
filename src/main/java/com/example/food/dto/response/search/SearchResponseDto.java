@@ -22,7 +22,6 @@ public class SearchResponseDto {
     private double y;
     private String image;
 
-
     public static SearchResponseDto of(Place place){
         return SearchResponseDto.builder()
                 .placeId(place.getPlaceId())

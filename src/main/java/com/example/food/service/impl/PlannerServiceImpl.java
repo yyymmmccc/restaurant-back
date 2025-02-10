@@ -8,6 +8,7 @@ import com.example.food.dto.response.ResponseDto;
 import com.example.food.dto.response.planner.CreatePlannerResponseDto;
 import com.example.food.dto.response.planner.GetPlannerResponseDto;
 import com.example.food.handler.CustomException;
+import com.example.food.repository.PlannerDetailRepository;
 import com.example.food.repository.PlannerRepository;
 import com.example.food.repository.UserRepository;
 import com.example.food.service.PlannerService;
@@ -22,13 +23,14 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class PlannerServiceImpl implements PlannerService {
 
     private final UserRepository userRepository;
     private final PlannerRepository plannerRepository;
+    private final PlannerDetailRepository plannerDetailRepository;
 
     @Override
-    @Transactional
     public ResponseEntity createPlanner(String userId, PlannerRequestDto dto) {
 
         User user = findByUser(userId);
@@ -62,7 +64,8 @@ public class PlannerServiceImpl implements PlannerService {
         if(!planner.getUser().equals(user))
             throw new CustomException(ResponseCode.BAD_REQUEST);
 
-        plannerRepository.delete(planner);
+        plannerDetailRepository.deletePlannerDetail(planner);
+        plannerRepository.deleteById(planner.getPlannerId());
 
         return ResponseDto.success(null);
     }

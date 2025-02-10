@@ -16,22 +16,10 @@ public class PlaceRequestDto {
 
     private int placeId;
     private int dayNumber;
-    private int categoryCode;
-    private String placeName;
-    private String phone;
-    private String addressName;
-    private double x;
-    private double y;
 
     public Place toPlaceEntity(){
         return Place.builder()
                 .placeId(this.placeId)
-                .categoryCode(this.categoryCode)
-                .placeName(this.placeName)
-                .phone(this.phone)
-                .addressName(this.addressName)
-                .x(this.x)
-                .y(this.y)
                 .build();
     }
 
