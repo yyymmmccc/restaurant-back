@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,9 +38,24 @@ public class Planner {
     @CreationTimestamp
     private Date createDate;
 
+    @Column(name = "update_date")
+    @UpdateTimestamp
+    private Date updateDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
 
+    public void updateTitle(String title){
+        this.plannerTitle = title;
+    }
+
+    public void updateStartDate(Date startDate){
+        this.startDate = startDate;
+    }
+
+    public void updateEndDate(Date endDate){
+        this.endDate = endDate;
+    }
 }

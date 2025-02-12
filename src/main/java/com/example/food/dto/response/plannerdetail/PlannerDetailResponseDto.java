@@ -16,6 +16,7 @@ import java.util.List;
 public class PlannerDetailResponseDto {
 
     private int plannerId;
+    private String plannerTitle;
     private Date startDate;
     private Date endDate;
     private int totalDate;

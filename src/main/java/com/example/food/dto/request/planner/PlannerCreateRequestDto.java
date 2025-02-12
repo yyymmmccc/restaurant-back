@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlannerRequestDto {
+public class PlannerCreateRequestDto {
 
     private String plannerTitle;
     private Date startDate;

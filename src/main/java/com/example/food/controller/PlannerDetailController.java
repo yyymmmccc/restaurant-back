@@ -29,6 +29,7 @@ public class PlannerDetailController {
         return plannerDetailService.getPlannerDetail(userId, plannerId);
     }
 
+    /*
     @DeleteMapping("")
     public ResponseEntity deletePlannerDetail(@AuthenticationPrincipal String userId,
                                               @RequestParam(name = "plannerDetailId") int plannerDetailId){
@@ -36,5 +37,7 @@ public class PlannerDetailController {
         return plannerDetailService.deletePlannerDetail(userId, plannerDetailId);
     }
 
+
+     */
 
 }

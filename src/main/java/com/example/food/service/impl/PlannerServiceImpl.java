@@ -3,7 +3,8 @@ package com.example.food.service.impl;
 import com.example.food.common.ResponseCode;
 import com.example.food.domain.Planner;
 import com.example.food.domain.User;
-import com.example.food.dto.request.planner.PlannerRequestDto;
+import com.example.food.dto.request.planner.PlannerCreateRequestDto;
+import com.example.food.dto.request.planner.PlannerUpdateRequestDto;
 import com.example.food.dto.response.ResponseDto;
 import com.example.food.dto.response.planner.CreatePlannerResponseDto;
 import com.example.food.dto.response.planner.GetPlannerResponseDto;
@@ -31,7 +32,7 @@ public class PlannerServiceImpl implements PlannerService {
     private final PlannerDetailRepository plannerDetailRepository;
 
     @Override
-    public ResponseEntity createPlanner(String userId, PlannerRequestDto dto) {
+    public ResponseEntity createPlanner(String userId, PlannerCreateRequestDto dto) {
 
         User user = findByUser(userId);
 
@@ -70,6 +71,29 @@ public class PlannerServiceImpl implements PlannerService {
         return ResponseDto.success(null);
     }
 
+    @Override
+    public ResponseEntity updatePlanner(String userId, PlannerUpdateRequestDto dto) {
+
+        int plannerId = dto.getPlannerId();
+        Planner planner = findByPlanner(plannerId);
+
+        User user = findByUser(userId);
+        // 유저가 해당 유저인지 검증 -> 만약 다르다면 exception 발생으로 더 이상 코드 진행 x
+        verifyUser(user, planner);
+
+        String title = dto.getPlannerTitle();
+        Date startDate = dto.getStartDate();
+        Date endDate = dto.getEndDate();
+
+        if(!planner.getPlannerTitle().equals(title)) planner.updateTitle(title);
+
+        if(!planner.getStartDate().equals(startDate)) planner.updateStartDate(startDate);
+
+        if(!planner.getStartDate().equals(endDate)) planner.updateEndDate(endDate);
+
+        return ResponseDto.success(null);
+    }
+
     public User findByUser(String userId){
 
         User user = userRepository.findById(userId).orElseThrow(()
@@ -84,5 +108,11 @@ public class PlannerServiceImpl implements PlannerService {
                 -> new CustomException(ResponseCode.NOT_FOUND_PLANNER));
 
         return planner;
+    }
+
+    public void verifyUser(User user, Planner planner){
+        if(!user.equals(planner.getUser()))
+            throw new CustomException(ResponseCode.BAD_REQUEST);
+
     }
 }

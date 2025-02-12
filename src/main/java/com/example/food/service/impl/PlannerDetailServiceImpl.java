@@ -4,8 +4,10 @@ import com.example.food.common.ResponseCode;
 import com.example.food.domain.Place;
 import com.example.food.domain.Planner;
 import com.example.food.domain.PlannerDetail;
+import com.example.food.dto.request.planner.PlannerUpdateRequestDto;
 import com.example.food.dto.request.plannerdetail.PlannerDetailDto;
 import com.example.food.dto.request.plannerdetail.PlannerDetailRequestDto;
+import com.example.food.dto.request.plannerdetail.PlannerDetailUpdateRequestDto;
 import com.example.food.dto.response.ResponseDto;
 import com.example.food.dto.response.plannerdetail.PlannerDetailListResponseDto;
 import com.example.food.dto.response.plannerdetail.PlannerDetailResponseDto;
@@ -37,6 +39,9 @@ public class PlannerDetailServiceImpl implements PlannerDetailService {
 
         Planner planner = plannerRepository.findById(dto.getPlannerId()).orElseThrow(()
                 -> new CustomException(ResponseCode.NOT_FOUND_PLANNER));
+
+        if(!plannerDetailRepository.findByPlanner(planner).isEmpty())
+            throw new CustomException(ResponseCode.BAD_REQUEST);
 
         List<Integer> allPlaceIds = new ArrayList<>();
         for (PlannerDetailDto plannerDetailDto : dto.getDays()) {
@@ -90,9 +95,83 @@ public class PlannerDetailServiceImpl implements PlannerDetailService {
         // 출발날짜와 도착날짜 며칠차이 계산하기 0은 당일치기 / 1을 1박2일
         int calcDate = (int) ((endDate.getTime()-startDate.getTime()) / (24*60*60*1000));
 
-        return ResponseDto.success(new PlannerDetailResponseDto(planner.getPlannerId(), startDate, endDate, calcDate, plannerDetailResponseDtoList));
+        return ResponseDto.success(new PlannerDetailResponseDto(planner.getPlannerId(), planner.getPlannerTitle(), startDate, endDate, calcDate, plannerDetailResponseDtoList));
     }
 
+    @Override
+    public ResponseEntity updatePlanner(String userId, PlannerUpdateRequestDto dto) {
+
+        int plannerId = dto.getPlannerId();
+
+        Planner planner = plannerRepository.findById(plannerId).orElseThrow(()
+                -> new CustomException(ResponseCode.NOT_FOUND_PLANNER));
+
+        plannerDetailRepository.deleteByPlanner(planner);
+
+        List<PlannerDetailUpdateRequestDto> dayList = dto.getDays();
+
+        List<Integer> placeIdList = new ArrayList<>();
+
+        // 첫날 -> 모든 장소Id 다 저장, 둘째날 -> 모든 장소 Id 다 저장
+        // [[1, 2, 5], [25, 99, 192]] 이런식으로
+        for(PlannerDetailUpdateRequestDto day : dayList){
+            placeIdList.addAll(day.getPlaceIdList());
+        }
+
+        List<Place> placeList = placeRepository.findAllById(placeIdList);
+        Map<Integer, Place> placeMap = new HashMap<>();
+
+        // 1: place
+        // 5: place....
+        for(Place place : placeList){
+            placeMap.put(place.getPlaceId(), place);
+        }
+
+        List<PlannerDetail> plannerDetailList = new ArrayList<>();
+
+        for(PlannerDetailUpdateRequestDto day : dayList){
+            for(Integer i : day.getPlaceIdList()){
+                // 반복문을 돌면서 placeMap에 해당 place가 있는지 검사
+                Place place = placeMap.get(i);
+                if(place == null) {
+                    throw new CustomException(ResponseCode.NOT_FOUND_PLACE);
+                }
+
+                plannerDetailList.add(
+                        PlannerDetail.builder()
+                                .dayNumber(day.getDayNumber())
+                                .place(place)
+                                .planner(planner)
+                                .build());
+            }
+        }
+
+        plannerDetailRepository.batchInsertPlannerDetail(plannerDetailList);
+
+        return ResponseDto.success(null);
+
+        // plannerDetailId 리스트를 for문으로 받아 온 후 해당 데이터 다 삭제 후
+        // -> 다시 저장
+
+        /*
+        days:[{
+            dayNumber: 0
+            placeIdList: [1, 3, 5]
+        }],
+        [{
+            dayNumber: 1
+            placeIdList: [2, 3, 5]
+        }]
+
+
+         */
+
+
+
+
+    }
+
+    /*
     @Override
     public ResponseEntity deletePlannerDetail(String userId, int plannerDetailId) {
         PlannerDetail plannerDetail = plannerDetailRepository.findById(plannerDetailId).orElseThrow(()
@@ -107,4 +186,6 @@ public class PlannerDetailServiceImpl implements PlannerDetailService {
 
         return ResponseDto.success(null);
     }
+
+     */
 }

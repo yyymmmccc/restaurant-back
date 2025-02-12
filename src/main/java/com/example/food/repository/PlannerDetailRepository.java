@@ -21,4 +21,6 @@ public interface PlannerDetailRepository extends JpaRepository<PlannerDetail, In
     @Modifying
     @Query("DELETE FROM plannerDetail pd WHERE pd.planner = :planner")
     void deletePlannerDetail(@Param("planner") Planner planner);
+
+    void deleteByPlanner(Planner planner);
 }
