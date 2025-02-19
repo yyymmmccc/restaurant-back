@@ -40,10 +40,12 @@ public class PlannerDetailServiceImpl implements PlannerDetailService {
         Planner planner = plannerRepository.findById(dto.getPlannerId()).orElseThrow(()
                 -> new CustomException(ResponseCode.NOT_FOUND_PLANNER));
 
+        // 이미 생성이 된 플래너(디테일)이 있는지 판단 후 exception
         if(!plannerDetailRepository.findByPlanner(planner).isEmpty())
             throw new CustomException(ResponseCode.BAD_REQUEST);
 
         List<Integer> allPlaceIds = new ArrayList<>();
+        // 1일차, 2일차.. 를 순회하며 해당 날짜에 장소들을 리스트에 저장
         for (PlannerDetailDto plannerDetailDto : dto.getDays()) {
             allPlaceIds.addAll(plannerDetailDto.getPlaceIdList());
         }
@@ -60,7 +62,7 @@ public class PlannerDetailServiceImpl implements PlannerDetailService {
         for (PlannerDetailDto plannerDetailDto : dto.getDays()) {
             for (Integer placeId : plannerDetailDto.getPlaceIdList()) {
                 Place place = placeMap.get(placeId);
-                if (place == null){
+                if (place == null){ // 디비에 없는 장소일 경우 오류
                     throw new CustomException(ResponseCode.BAD_REQUEST);
                 }
                 plannerDetails.add(PlannerDetailDto.toEntity(planner, place, plannerDetailDto.getDayNumber()));
@@ -68,6 +70,7 @@ public class PlannerDetailServiceImpl implements PlannerDetailService {
         }
 
         plannerDetailRepository.batchInsertPlannerDetail(plannerDetails);
+        // 배치 insert가 아닌 save를 하게되면 plannerDetail에 id가 ai이므로 매 insert마다 계속 쿼리가 발생함
 
         return ResponseDto.success(planner.getPlannerId());
     }

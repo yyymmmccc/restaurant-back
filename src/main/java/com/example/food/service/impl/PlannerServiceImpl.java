@@ -82,14 +82,18 @@ public class PlannerServiceImpl implements PlannerService {
         verifyUser(user, planner);
 
         String title = dto.getPlannerTitle();
-        Date startDate = dto.getStartDate();
-        Date endDate = dto.getEndDate();
+        //Date startDate = dto.getStartDate();
+        //Date endDate = dto.getEndDate();
 
-        if(!planner.getPlannerTitle().equals(title)) planner.updateTitle(title);
+        if(!planner.getPlannerTitle().equals(title)) {
+            log.info("requestTitle : " + title);
+            planner.updateTitle(title);
+            log.info("updateTitle : " + planner.getPlannerTitle());
+        }
 
-        if(!planner.getStartDate().equals(startDate)) planner.updateStartDate(startDate);
+        //if(!planner.getStartDate().equals(startDate)) planner.updateStartDate(startDate);
 
-        if(!planner.getStartDate().equals(endDate)) planner.updateEndDate(endDate);
+        //if(!planner.getStartDate().equals(endDate)) planner.updateEndDate(endDate);
 
         return ResponseDto.success(null);
     }

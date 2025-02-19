@@ -11,6 +11,7 @@ import com.example.food.handler.CustomException;
 import com.example.food.provider.JwtProvider;
 import com.example.food.repository.UserRepository;
 import com.example.food.service.AuthService;
+import com.example.food.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AuthServiceImpl implements AuthService {
 
+    private final UserService userService;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -38,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity dupNickname(NicknameCheckRequestDto dto) {
 
-        if(checkNicknameDuplicate(dto.getNickname()))
+        if(userService.checkNicknameDuplicate(dto.getNickname()))
             throw new CustomException(ResponseCode.DUP_NICKNAME);
 
         return ResponseDto.success(null);
@@ -55,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
         if(!password.equals(dto.getPasswordCheck()))
             throw new CustomException(ResponseCode.REG_PASSWORD_FAIL);
 
-        if(checkNicknameDuplicate(dto.getNickname()))
+        if(userService.checkNicknameDuplicate(dto.getNickname()))
             throw new CustomException(ResponseCode.DUP_NICKNAME);
 
         String encodedPassword = passwordEncoder.encode(password);
@@ -85,10 +87,5 @@ public class AuthServiceImpl implements AuthService {
     public boolean checkUserIdDuplicate(String userId) {
 
         return userRepository.existsById(userId);
-    }
-
-    public boolean checkNicknameDuplicate(String nickname) {
-
-        return userRepository.existsByNickname(nickname);
     }
 }

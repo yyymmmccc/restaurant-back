@@ -18,6 +18,7 @@ public class PlannerDetailListResponseDto {
     private String image;
     private String placeName;
     private String addressName;
+    private String phone;
     private double x;
     private double y;
 
@@ -29,6 +30,7 @@ public class PlannerDetailListResponseDto {
                 .image(plannerDetail.getPlace().getImage())
                 .placeName(plannerDetail.getPlace().getPlaceName())
                 .addressName(plannerDetail.getPlace().getAddressName())
+                .phone(plannerDetail.getPlace().getPhone())
                 .x(plannerDetail.getPlace().getX())
                 .y(plannerDetail.getPlace().getY())
                 .build();
