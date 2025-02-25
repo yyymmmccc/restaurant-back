@@ -37,6 +37,12 @@ public class PlannerController {
         return plannerService.getPlanner(userId, plannerId);
     }
 
+    @GetMapping("/list")
+    public ResponseEntity getPlannerList(@AuthenticationPrincipal String userId){
+
+        return plannerService.getPlannerList(userId);
+    }
+
     @PatchMapping("")
     public ResponseEntity updatePlanner(@AuthenticationPrincipal String userId,
                                         @RequestBody PlannerUpdateRequestDto dto){
@@ -53,8 +59,6 @@ public class PlannerController {
         return ResponseDto.success(dto.getPlannerId());
 
     }
-
-
 
     @DeleteMapping("/{plannerId}")
     public ResponseEntity deletePlanner(@AuthenticationPrincipal String userId,

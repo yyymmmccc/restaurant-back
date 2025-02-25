@@ -16,7 +16,6 @@ public class GetUserInfoResponseDto {
 
     private String userId;
     private String nickname;
-    private String profileImage;
     private String provider;
     private Date regDate;
     private Date updateDate;
@@ -25,7 +24,6 @@ public class GetUserInfoResponseDto {
         return GetUserInfoResponseDto.builder()
                 .userId(user.getUserId())
                 .nickname(user.getNickname())
-                .profileImage(user.getProfileImage())
                 .provider(user.getProvider())
                 .regDate(user.getRegDate())
                 .updateDate(user.getUpdateDate())

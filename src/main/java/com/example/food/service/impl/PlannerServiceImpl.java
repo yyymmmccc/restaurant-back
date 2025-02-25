@@ -7,6 +7,7 @@ import com.example.food.dto.request.planner.PlannerCreateRequestDto;
 import com.example.food.dto.request.planner.PlannerUpdateRequestDto;
 import com.example.food.dto.response.ResponseDto;
 import com.example.food.dto.response.planner.CreatePlannerResponseDto;
+import com.example.food.dto.response.planner.GetPlannerListResponseDto;
 import com.example.food.dto.response.planner.GetPlannerResponseDto;
 import com.example.food.handler.CustomException;
 import com.example.food.repository.PlannerDetailRepository;
@@ -19,7 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +99,21 @@ public class PlannerServiceImpl implements PlannerService {
         //if(!planner.getStartDate().equals(endDate)) planner.updateEndDate(endDate);
 
         return ResponseDto.success(null);
+    }
+
+    @Override
+    public ResponseEntity getPlannerList(String userId) {
+
+        User user = findByUser(userId);
+
+        List<Planner> plannerList = plannerRepository.findByUserOrderByUpdateDateDesc(user);
+
+        List<GetPlannerListResponseDto> plannerListResponseDto = new ArrayList<>();
+        for(Planner planner : plannerList){
+            plannerListResponseDto.add(GetPlannerListResponseDto.of(planner));
+        }
+
+        return ResponseDto.success(plannerListResponseDto);
     }
 
     public User findByUser(String userId){

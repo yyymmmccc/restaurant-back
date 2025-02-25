@@ -13,4 +13,6 @@ public interface PlannerService {
     ResponseEntity deletePlanner(String userId, int plannerId);
 
     ResponseEntity updatePlanner(String userId, PlannerUpdateRequestDto dto);
+
+    ResponseEntity getPlannerList(String userId);
 }

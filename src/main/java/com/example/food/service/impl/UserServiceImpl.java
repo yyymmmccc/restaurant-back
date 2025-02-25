@@ -2,6 +2,7 @@ package com.example.food.service.impl;
 
 import com.example.food.common.ResponseCode;
 import com.example.food.domain.User;
+import com.example.food.dto.request.user.UpdateUserNicknameRequestDto;
 import com.example.food.dto.response.ResponseDto;
 import com.example.food.dto.response.user.GetUserInfoResponseDto;
 import com.example.food.handler.CustomException;
@@ -33,6 +34,17 @@ public class UserServiceImpl implements UserService {
 
         if(checkNicknameDuplicate(nickname))
             throw new CustomException(ResponseCode.DUP_NICKNAME);
+
+        return ResponseDto.success(null);
+    }
+
+    @Override
+    public ResponseEntity updateNickname(String userId, UpdateUserNicknameRequestDto dto) {
+
+        User user = userRepository.findById(userId).orElseThrow(()
+                -> new CustomException(ResponseCode.NOT_FOUND_USER));
+
+        user.updateNickname(dto.getNickname());
 
         return ResponseDto.success(null);
     }

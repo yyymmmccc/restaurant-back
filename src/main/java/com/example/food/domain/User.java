@@ -28,9 +28,6 @@ public class User {
 
     private String nickname;
 
-    @Column(name = "profile_image")
-    private String profileImage;
-
     private String provider;
 
     @CreationTimestamp
@@ -40,4 +37,8 @@ public class User {
     @UpdateTimestamp
     @Column(name = "update_date")
     private Date updateDate;
+
+    public void updateNickname(String nickname){
+        this.nickname = nickname;
+    }
 }
